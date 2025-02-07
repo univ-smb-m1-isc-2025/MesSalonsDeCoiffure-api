@@ -1,13 +1,7 @@
-# the base image
-FROM amazoncorretto:17
+FROM eclipse-temurin:17-jre-alpine
 
-# the JAR file path
-ARG JAR_FILE=target/*.jar
+COPY ./target/hairLab-0.0.1-SNAPSHOT.jar .
 
-# Copy the JAR file from the build context into the Docker image
-COPY ${JAR_FILE} application.jar
+EXPOSE 8080
 
-CMD apt-get update -y
-
-# Set the default command to run the Java application
-ENTRYPOINT ["java", "-Xmx2048M", "-jar", "/application.jar"]
+CMD ["sh","-c","java -XX:InitialRAMPercentage=50 -XX:MaxRAMPercentage=70  -XshowSettings $JAVA_OPTS -jar hairLab-0.0.1-SNAPSHOT.jar"]
