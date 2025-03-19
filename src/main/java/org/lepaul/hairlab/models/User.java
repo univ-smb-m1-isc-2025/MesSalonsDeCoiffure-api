@@ -1,8 +1,12 @@
 package org.lepaul.hairlab.models;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 
+@Getter
+@Setter
 @Entity
 @Table(name = "users")
 public class User {
@@ -22,7 +26,6 @@ public class User {
         this.lastName = lastName;
         this.email = email;
     }
-
     @Override
     public String toString() {
         return "User{firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + "}";

@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
 
     private final UserRepository userRepository;
@@ -26,8 +27,8 @@ public class UserController {
     }
 
     @PostMapping("/addUser")
-    public User addUser(@RequestBody User user) {
-        logger.info("POST /addUser called");
-        return this.userRepository.save(user);
+    public User addUser(@RequestBody User usert) {
+        logger.info("POST /addUser called : ADD USER {}", usert);
+        return this.userRepository.save(usert);
     }
 }
