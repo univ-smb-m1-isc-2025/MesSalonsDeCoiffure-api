@@ -1,29 +1,28 @@
-version: '3.8'
 
 services:
-  app:
-    image: 'docker-spring-boot-postgres:latest'
-    build:
-      context: .
-    container_name: app
+  hairlab-api:
+    image: ghcr.io/univ-smb-m1-isc-2025/messalonsdecoiffure-api:main
+    container_name: hairlab-api
+    #restart: always
     depends_on:
-      - db
+      - postgres
     environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:${DOCKER_DB_PORT}/${POSTGRES_DB}
-      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
-      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+      - VIRTUAL_HOST=api.HairLab.oups.net
+      - VIRTUAL_PORT=8080
+      - LETSENCRYPT_HOST=api.HairLab.oups.net
+      #      - LETSENCRYPT_TEST=true
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/db_hairlab
+      - SPRING_DATASOURCE_USERNAME=hairlab_root
+      - SPRING_DATASOURCE_PASSWORD=hairlab123!
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-    ports:
-      - "${LOCAL_APP_PORT}:${DOCKER_APP_PORT}"
 
-  db:
-    image: postgres
-    container_name: db
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres
+    restart: always
     environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
-    ports:
-      - "${LOCAL_DB_PORT}:${DOCKER_DB_PORT}"
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+    # Do not expose port publicly
+    #    ports:
+    #      - 5432:5432
