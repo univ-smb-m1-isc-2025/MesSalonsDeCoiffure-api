@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "www.hairlab.oups.net:8080")
 public class UserController {
 
     private final UserRepository userRepository;
