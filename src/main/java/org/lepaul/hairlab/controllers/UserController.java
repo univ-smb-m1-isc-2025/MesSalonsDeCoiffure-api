@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "www.hairlab.oups.net:8080")
 public class UserController {
 
     private final UserRepository userRepository;
@@ -31,4 +30,17 @@ public class UserController {
         logger.info("POST /addUser called : ADD USER {}", usert);
         return this.userRepository.save(usert);
     }
+
+    @PostMapping("/checkUser")
+    public boolean checkUserExists(@RequestBody User user) {
+        logger.info("POST /checkUser called with email: {}", user.getEmail());
+
+        if (user.getEmail() == null || user.getPassword() == null) {
+            logger.error("Missing email or password");
+            return false;
+        }
+
+        return userRepository.findByEmailAndPassword(user.getEmail(), user.getPassword()).isPresent();
+    }
+
 }

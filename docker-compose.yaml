@@ -1,28 +1,25 @@
-
 services:
   hairlab-api:
-    image: ghcr.io/univ-smb-m1-isc-2025/messalonsdecoiffure-api:main
+    build: .
     container_name: hairlab-api
-    #restart: always
     depends_on:
       - postgres
     environment:
-      - VIRTUAL_HOST=api.HairLab.oups.net
-      - VIRTUAL_PORT=8080
-      - LETSENCRYPT_HOST=api.HairLab.oups.net
-      #      - LETSENCRYPT_TEST=true
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/db_hairlab
       - SPRING_DATASOURCE_USERNAME=hairlab_root
       - SPRING_DATASOURCE_PASSWORD=hairlab123!
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - VIRTUAL_PORT=8080
+    ports:
+      - "8080:8080"
 
   postgres:
     image: postgres:16-alpine
     container_name: postgres
     restart: always
     environment:
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
-    # Do not expose port publicly
-    #    ports:
-    #      - 5432:5432
+      - POSTGRES_DB=db_hairlab
+      - POSTGRES_USER=hairlab_root
+      - POSTGRES_PASSWORD=hairlab123!
+    ports:
+      - "5432:5432"
