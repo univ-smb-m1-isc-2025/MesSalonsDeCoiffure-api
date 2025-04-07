@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/usersHL")
 public class UserController {
 
     private final UserRepository userRepository;
