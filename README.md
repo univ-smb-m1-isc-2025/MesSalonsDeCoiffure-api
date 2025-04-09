@@ -54,51 +54,94 @@ docker-compose up -d --force-recreate
 ---
 
 ## 📡 API Endpoints
-| Méthode | Endpoint                          | Description                                           |
-|---------|-----------------------------------|-------------------------------------------------------|
-| **GET** | `/usersHL/users`                  | Récupérer la liste des utilisateurs                   |
-| **POST** | `/usersHL/addUser`                | Ajouter un nouvel utilisateur                         |
-| **POST** | `/usersHL/checkUser`              | Vérifier l'existence d'un utilisateur                 |
-| **GET** | `/estabHL/estabs`                 | Récupérer la liste des établissements                 |
-| **POST** | `/estabHL/addEstab`               | Ajouter un établissement                              |
-| **POST** | `/collaboratorsHL/addCollaborator` | Ajouter un collaborateur                              |
-| **POST** | `/collaboratorsHL/byEstab/{estabId}`       | Récupère la liste de collaborateur d'un établissement |
+
+### 👤 Utilisateurs
+
+| Méthode | Endpoint                  | Description                               |
+|---------|---------------------------|-------------------------------------------|
+| GET     | `/usersHL/users`          | Récupérer la liste des utilisateurs       |
+| POST    | `/usersHL/addUser`        | Ajouter un nouvel utilisateur             |
+| POST    | `/usersHL/checkUser`      | Vérifier l'existence d'un utilisateur     |
+
+### 🏢 Établissements
+
+| Méthode | Endpoint                  | Description                                 |
+|---------|---------------------------|---------------------------------------------|
+| GET     | `/estabHL/estabs`         | Récupérer la liste des établissements       |
+| POST    | `/estabHL/addEstab`       | Ajouter un nouvel établissement             |
+
+### 👨‍💼 Collaborateurs
+
+| Méthode | Endpoint                                       | Description                                                     |
+|---------|------------------------------------------------|-----------------------------------------------------------------|
+| POST    | `/collaboratorsHL/addCollaborator`             | Ajouter un collaborateur                                        |
+| GET     | `/collaboratorsHL/byEstab?estabId={id}`        | Récupérer les collaborateurs d’un établissement                 |
+
+### 📅 Rendez-vous (Appointments)
+
+| Méthode | Endpoint                                                       | Description                                           |
+|---------|----------------------------------------------------------------|-------------------------------------------------------|
+| POST    | `/appointmentsHL/addAppointment`                                          | Ajouter un rendez-vous                                |
+| GET     | `/appointmentsHL/byEstab?establishmentId={id}`        | Récupérer les rendez-vous par établissement           |
+| GET     | `/appointmentsHL/byCollab?collaboratorId={id}`          | Récupérer les rendez-vous par collaborateur           |
+| GET     | `/appointmentsHL/byClient?clientId={id}`                      | Récupérer les rendez-vous d’un client                 |
 
 ---
 
-## 🏗️ Objets JSON
+## 🧾 Exemples de Payloads
 
-### 🧑 **Utilisateur (`USER`)**
+### 🔸 Ajouter un utilisateur (`POST /usersHL/addUser`)
 ```json
 {
+  "firstName": "Jean",
+  "lastName": "Martin",
+  "email": "jean.martin@example.com",
+  "password": "motdepasse123",
+  "role": "client"
+}
+```
+
+### 🔸 Vérifier l'existence d'un utilisateur (`POST /usersHL/checkUser`)
+```json
+{
+  "id": 3,
   "firstName": "Jacob",
   "lastName": "Edouard",
   "email": "jac.ed@gmail.com",
-  "password": "123",
-  "role": "gerant"
+  "password": "123"
 }
 ```
 
-### 🏢 **Établissement (`ESTABLISHMENT`)**
+### 🔸 Ajouter un nouvel établissement (`POST /estabHL/addEstab`)
 ```json
 {
-  "name": "Coif-ureInc",
-  "address": "10 Rue Chateau des ducs",
-  "phone": "0425364295",
-  "email": "coif.contact@coff.fr",
-  "urlImage": "nfduhk-db_412nehj.png",
-  "codeEstablishment": "1e754f4g5yy541"
+  "name":"Coif-ureInc", 
+  "address":"10 Rue Chateau des ducs", 
+  "phone":"0425364295", 
+  "email":"coif.contact@coff.fr",
+  "urlImage": "urlImageExemple.png",
+  "codeEstablishment" : "1e754f4g5yy541"
 }
 ```
 
-### 🏢 **Exemple de requête pour ajouter collaborateur (`Collaborator`)**
+### 🔸 Ajouter un collaborateur (`POST /collaboratorsHL/addCollaborator`)
 ```json
 {
-  "userId": 4,
+  "userId": 2,
   "establishmentId": 1
 }
 ```
 
+### 🔸 Ajouter un rendez-vous (`POST /appointmentsHL/addAppointment`)
+```json
+{
+  "clientId": 1,
+  "collaboratorId": 1,
+  "establishmentId": 1,
+  "dateDebut": "2025-04-10T15:30:00",
+  "dateFin": "2025-04-10T16:00:00"
+}
+```
 
 
 ---
