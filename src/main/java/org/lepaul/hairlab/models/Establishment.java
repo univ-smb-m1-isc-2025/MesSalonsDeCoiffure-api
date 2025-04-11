@@ -20,6 +20,7 @@ public class Establishment{
 
     private String name;
     private String address;
+    private String ville;
     private String phone;
     private String email;
     private String urlImage;
@@ -42,7 +43,7 @@ public class Establishment{
 
     @Override
     public String toString() {
-        return "Establishment={" + "id=" + id + ", name=" + name + ", address=" + address + ", phone=" + phone + ", email=" + email + ", code=" + codeEstablishment + '}';
+        return "Establishment={" + "id=" + id + ", name=" + name + ", address=" + address + ", ville=" + ville + ", phone=" + phone + ", email=" + email + ", code=" + codeEstablishment + '}';
     }
 
 }

@@ -116,7 +116,8 @@ docker-compose up -d --force-recreate
 ```json
 {
   "name":"Coif-ureInc", 
-  "address":"10 Rue Chateau des ducs", 
+  "address":"10 Rue Chateau des ducs",
+  "ville": "Chambéry",
   "phone":"0425364295", 
   "email":"coif.contact@coff.fr",
   "urlImage": "urlImageExemple.png",
