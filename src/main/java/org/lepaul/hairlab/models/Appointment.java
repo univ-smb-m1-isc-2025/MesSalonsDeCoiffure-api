@@ -18,6 +18,8 @@ public class Appointment {
 
     private Timestamp dateDebut;
     private Timestamp dateFin;
+    private String description;
+    private Long price;
 
     @ManyToOne
     @JoinColumn(name = "client_id", nullable = false)
@@ -33,9 +35,11 @@ public class Appointment {
 
     public Appointment() {}
 
-    public Appointment(Timestamp dateDebut, Timestamp dateFin, User client, Collaborator collaborator, Establishment establishment) {
+    public Appointment(Timestamp dateDebut, Timestamp dateFin, String description, Long price, User client, Collaborator collaborator, Establishment establishment) {
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
+        this.description = description;
+        this.price = price;
         this.client = client;
         this.collaborator = collaborator;
         this.establishment = establishment;
@@ -47,6 +51,8 @@ public class Appointment {
                 "id=" + id +
                 ", dateDebut=" + dateDebut +
                 ", dateFin=" + dateFin +
+                ", description=" + description +
+                ", price=" + price +
                 ", client=" + client.getEmail() +
                 ", collaborator=" + collaborator.getUser().getEmail() +
                 ", establishment=" + establishment.getName() +

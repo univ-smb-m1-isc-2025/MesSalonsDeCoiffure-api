@@ -139,7 +139,9 @@ docker-compose up -d --force-recreate
   "collaboratorId": 1,
   "establishmentId": 1,
   "dateDebut": "2025-04-10T15:30:00",
-  "dateFin": "2025-04-10T16:00:00"
+  "dateFin": "2025-04-10T16:00:00",
+  "description" : "Coupe Homme Typer Low slick back",
+  "price" : 30.0
 }
 ```
 

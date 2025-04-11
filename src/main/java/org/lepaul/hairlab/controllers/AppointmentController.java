@@ -46,7 +46,7 @@ public class AppointmentController {
         Establishment establishment = estabRepo.findById(request.getEstablishmentId())
                 .orElseThrow(() -> new RuntimeException("Establishment not found"));
 
-        Appointment appointment = new Appointment(request.getDateDebut(), request.getDateFin() , client, collaborator, establishment);
+        Appointment appointment = new Appointment(request.getDateDebut(), request.getDateFin(), request.getDescription(), request.getPrice(), client, collaborator, establishment);
         return appointmentRepo.save(appointment);
     }
 
@@ -73,5 +73,7 @@ public class AppointmentController {
         private Long establishmentId;
         private Timestamp dateDebut;
         private Timestamp dateFin;
+        private String description;
+        private Long price;
     }
 }
