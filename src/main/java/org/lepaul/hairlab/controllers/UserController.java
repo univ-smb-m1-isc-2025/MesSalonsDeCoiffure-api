@@ -34,6 +34,21 @@ public class UserController {
         return this.userRepository.save(usert);
     }
 
+    @PostMapping(value = "/updateUser", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public User updateUser(@RequestBody User user) {
+        logger.info("POST /updateUser called : UPDATE USER {}", user);
+
+        User existingUser = userRepository.findById(user.getId())
+                .orElseThrow(() -> new RuntimeException("User not found with id " + user.getId()));
+
+        existingUser.setFirstName(user.getFirstName());
+        existingUser.setLastName(user.getLastName());
+        existingUser.setEmail(user.getEmail());
+        // mets à jour les autres champs selon ton modèle
+
+        return userRepository.save(existingUser);
+    }
+
     @PostMapping("/checkUser")
     public returnRequestCheckUser checkUserExists(@RequestBody User user) {
         logger.info("POST /checkUser called with email: {}", user.getEmail());

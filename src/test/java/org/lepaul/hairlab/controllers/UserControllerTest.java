@@ -103,4 +103,44 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.trouve").value(false))
                 .andExpect(jsonPath("$.user").isEmpty());
     }
+
+    @Test
+    public void testUpdateUser_Success() throws Exception {
+        User existingUser = new User();
+        existingUser.setId(1L);
+        existingUser.setFirstName("AncienNom");
+        existingUser.setEmail("old@mail.com");
+
+        User updatedUser = new User();
+        updatedUser.setId(1L);
+        updatedUser.setFirstName("NouveauNom");
+        updatedUser.setEmail("new@mail.com");
+
+        when(userRepository.findById(1L)).thenReturn(Optional.of(existingUser));
+        when(userRepository.save(any(User.class))).thenReturn(updatedUser);
+
+        mockMvc.perform(post("/usersHL/updateUser")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updatedUser)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.firstName").value("NouveauNom"))
+                .andExpect(jsonPath("$.email").value("new@mail.com"));
+    }
+
+    @Test
+    public void testUpdateUser_UserNotFound() throws Exception {
+        User user = new User();
+        user.setId(999L);
+        user.setFirstName("NouveauNom");
+
+        when(userRepository.findById(999L)).thenReturn(Optional.empty());
+
+        mockMvc.perform(post("/usersHL/updateUser")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(user)))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("User not found with id 999"));
+    }
+
+
 }

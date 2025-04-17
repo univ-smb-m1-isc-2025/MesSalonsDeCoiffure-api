@@ -57,11 +57,12 @@ docker-compose up -d --force-recreate
 
 ### 👤 Utilisateurs
 
-| Méthode | Endpoint                  | Description                               |
-|---------|---------------------------|-------------------------------------------|
-| GET     | `/usersHL/users`          | Récupérer la liste des utilisateurs       |
-| POST    | `/usersHL/addUser`        | Ajouter un nouvel utilisateur             |
-| POST    | `/usersHL/checkUser`      | Vérifier l'existence d'un utilisateur     |
+| Méthode | Endpoint              | Description                          |
+|---------|-----------------------|--------------------------------------|
+| GET     | `/usersHL/users`      | Récupérer la liste des utilisateurs  |
+| POST    | `/usersHL/addUser`    | Ajouter un nouvel utilisateur        |
+| POST    | `/usersHL/checkUser`  | Vérifier l'existence d'un utilisateur |
+| POST    | `/usersHL/updateUser` | Modifie un utilisateur               |
 
 ### 🏢 Établissements
 
@@ -109,6 +110,17 @@ docker-compose up -d --force-recreate
   "lastName": "Edouard",
   "email": "jac.ed@gmail.com",
   "password": "123"
+}
+```
+
+### 🔸 Modifier un utilisateur (`POST /usersHL/updateUser`)
+```json
+{
+  "id": 3,
+  "firstName": "newName",
+  "lastName": "Edouard",
+  "email": "jac.ed@gmail.com",
+  "password": "newPassword"
 }
 ```
 
