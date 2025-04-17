@@ -1,6 +1,6 @@
 package org.lepaul.hairlab.controllers;
 
-import lombok.Getter;
+import org.lepaul.hairlab.DTOs.AppointmentDTO;
 import org.lepaul.hairlab.models.Appointment;
 import org.lepaul.hairlab.models.Collaborator;
 import org.lepaul.hairlab.models.Establishment;
@@ -12,7 +12,6 @@ import org.lepaul.hairlab.repo.UserRepository;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.sql.Timestamp;
 
 @RestController
 @RequestMapping("/appointmentsHL")
@@ -34,7 +33,7 @@ public class AppointmentController {
     }
 
     @PostMapping("/addAppointment")
-    public Appointment addAppointment(@RequestBody AppointmentRequest request) {
+    public Appointment addAppointment(@RequestBody AppointmentDTO request) {
         logger.info("POST /appointments/add called");
 
         User client = userRepo.findById(request.getClientId())
@@ -63,17 +62,5 @@ public class AppointmentController {
     @GetMapping("/byClient")
     public Iterable<Appointment> getAppointmentsByClient(@RequestParam Long clientId) {
         return appointmentRepo.findByClientId(clientId);
-    }
-
-    // Pour gérer la forme des requêtes
-    @Getter
-    public static class AppointmentRequest {
-        private Long clientId;
-        private Long collaboratorId;
-        private Long establishmentId;
-        private Timestamp dateDebut;
-        private Timestamp dateFin;
-        private String description;
-        private Long price;
     }
 }

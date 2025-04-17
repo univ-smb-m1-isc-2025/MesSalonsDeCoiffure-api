@@ -1,15 +1,12 @@
 package org.lepaul.hairlab.controllers;
 
 import lombok.Getter;
-import lombok.Setter;
 import org.lepaul.hairlab.models.User;
 import org.lepaul.hairlab.repo.UserRepository;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
 import org.slf4j.Logger;
-
 import java.util.Optional;
 
 @RestController

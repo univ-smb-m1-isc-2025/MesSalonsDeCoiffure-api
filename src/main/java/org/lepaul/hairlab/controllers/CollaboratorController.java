@@ -1,6 +1,6 @@
 package org.lepaul.hairlab.controllers;
 
-import lombok.Getter;
+import org.lepaul.hairlab.DTOs.CollaboratorDTO;
 import org.lepaul.hairlab.models.Collaborator;
 import org.lepaul.hairlab.models.Establishment;
 import org.lepaul.hairlab.models.User;
@@ -9,8 +9,9 @@ import org.lepaul.hairlab.repo.EstablishmentRepository;
 import org.lepaul.hairlab.repo.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.server.ResponseStatusException;
 import java.util.Optional;
 
 @RestController
@@ -29,24 +30,24 @@ public class CollaboratorController {
     }
 
     @PostMapping("/addCollaborator")
-    public CollaboratorResponseDTO addCollaborator(@RequestBody CollaboratorDTO dto) {
+    public org.lepaul.hairlab.DTOs.CollaboratorDTO addCollaborator(@RequestBody CollaboratorDTO dto) {
         logger.info("POST /addCollaborator called with userId: {}, establishmentId: {}", dto.getUserId(), dto.getEstablishmentId());
 
         User user = userRepo.findById(dto.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
         Establishment establishment = estabRepo.findById(dto.getEstablishmentId())
-                .orElseThrow(() -> new RuntimeException("Establishment not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Establishment not found"));
 
         // Vérifier si déjà lié
         Optional<Collaborator> existing = collaboratorRepo.findByUserAndEstablishment(user, establishment);
         if (existing.isPresent()) {
-            throw new RuntimeException("User already collaborator of this establishment");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User already collaborator of this establishment");
         }
 
         Collaborator collaborator = new Collaborator(user, establishment);
         Collaborator savedCollaborator =  collaboratorRepo.save(collaborator);
-        return new CollaboratorResponseDTO(savedCollaborator);
+        return new CollaboratorDTO(savedCollaborator);
     }
 
     @GetMapping("/byEstab")
@@ -54,23 +55,4 @@ public class CollaboratorController {
         return collaboratorRepo.findByEstablishmentId(estabId);
     }
 
-    @Getter
-    public static class CollaboratorDTO {
-        private Long id;
-        private Long userId;
-        private Long establishmentId;
-    }
-
-    @Getter
-    public static class CollaboratorResponseDTO {
-        private Long id;
-        private Long userId;
-        private Long establishmentId;
-
-        public CollaboratorResponseDTO(Collaborator collab) {
-            this.id = collab.getId();
-            this.userId = collab.getUser().getId();
-            this.establishmentId = collab.getEstablishment().getId();
-        }
-    }
 }
