@@ -9,9 +9,13 @@ import org.lepaul.hairlab.repo.AppointmentRepository;
 import org.lepaul.hairlab.repo.CollaboratorRepository;
 import org.lepaul.hairlab.repo.EstablishmentRepository;
 import org.lepaul.hairlab.repo.UserRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/appointmentsHL")
@@ -44,6 +48,14 @@ public class AppointmentController {
 
         Establishment establishment = estabRepo.findById(request.getEstablishmentId())
                 .orElseThrow(() -> new RuntimeException("Establishment not found"));
+
+        List<Appointment> conflicts = appointmentRepo.findConflictingAppointments(
+                collaborator.getId(), request.getDateDebut(), request.getDateFin());
+
+        // vérifie les conflis avec les heures
+        if (!conflicts.isEmpty()) {
+            throw new RuntimeException("Collaborator already has an appointment during that time");
+        }
 
         Appointment appointment = new Appointment(request.getDateDebut(), request.getDateFin(), request.getDescription(), request.getPrice(), client, collaborator, establishment);
         return appointmentRepo.save(appointment);
