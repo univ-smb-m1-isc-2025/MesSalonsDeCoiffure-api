@@ -77,14 +77,12 @@ public class AppointmentController {
     }
 
     @GetMapping("/byUserCollab")
-    public ResponseEntity<List<Appointment>> getAppointmentsByUserCollaborator(@RequestParam Long userId) {
+    public List<Appointment> getAppointmentsByUserCollaborator(@RequestParam Long userId) {
         logger.info("GET /appointmentsHL/byUserCollab?userId={}", userId);
 
         Collaborator collaborator = collaboratorRepo.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("Collaborator not found for userId: " + userId));
 
-        List<Appointment> appointments = appointmentRepo.findByCollaboratorId(collaborator.getId());
-
-        return ResponseEntity.ok(appointments);
+        return appointmentRepo.findByCollaboratorId(collaborator.getId());
     }
 }
