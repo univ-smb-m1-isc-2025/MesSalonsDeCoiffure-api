@@ -11,4 +11,6 @@ public interface CollaboratorRepository extends CrudRepository<Collaborator, Lon
 
     List<Collaborator> findByEstablishmentId(Long estabId);
     Optional<Collaborator> findByUserAndEstablishment(User user, Establishment establishment);
+    Optional<Collaborator> findByUserId(Long userId);
+
 }

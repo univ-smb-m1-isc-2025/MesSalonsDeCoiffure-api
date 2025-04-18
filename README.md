@@ -80,12 +80,14 @@ docker-compose up -d --force-recreate
 
 ### 📅 Rendez-vous (Appointments)
 
-| Méthode | Endpoint                                                       | Description                                           |
-|---------|----------------------------------------------------------------|-------------------------------------------------------|
-| POST    | `/appointmentsHL/addAppointment`                                          | Ajouter un rendez-vous                                |
-| GET     | `/appointmentsHL/byEstab?establishmentId={id}`        | Récupérer les rendez-vous par établissement           |
-| GET     | `/appointmentsHL/byCollab?collaboratorId={id}`          | Récupérer les rendez-vous par collaborateur           |
-| GET     | `/appointmentsHL/byClient?clientId={id}`                      | Récupérer les rendez-vous d’un client                 |
+| Méthode | Endpoint                                       | Description                                   |
+|---------|------------------------------------------------|-----------------------------------------------|
+| POST    | `/appointmentsHL/addAppointment`               | Ajouter un rendez-vous                        |
+| GET     | `/appointmentsHL/byEstab?establishmentId={id}` | Récupérer les rendez-vous par établissement   |
+| GET     | `/appointmentsHL/byCollab?collaboratorId={id}` | Récupérer les rendez-vous par collaborateur   |
+| GET     | `/appointmentsHL/byClient?clientId={id}`       | Récupérer les rendez-vous d’un client         |
+| GET     | `/appointmentsHL/byUserCollab?userId={id}`     | Récupérer les rendez-vous pour un Collaborator |
+
 
 ---
 

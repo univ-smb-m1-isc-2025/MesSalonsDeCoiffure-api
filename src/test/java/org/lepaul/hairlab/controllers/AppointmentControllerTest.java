@@ -184,4 +184,85 @@ public class AppointmentControllerTest {
                 .andExpect(content().string("Collaborator already has an appointment during that time"));
     }
 
+    @Test
+    public void testGetAppointmentsByClient_Found() throws Exception {
+        User client = new User();
+        client.setId(1L);
+
+        Collaborator collab = new Collaborator();
+        collab.setId(2L);
+
+        Establishment estab = new Establishment();
+        estab.setId(3L);
+
+        Appointment appointment = new Appointment(
+                Timestamp.valueOf("2025-05-01 10:00:00"),
+                Timestamp.valueOf("2025-05-01 11:00:00"),
+                "Coupe",
+                30L,
+                client, collab, estab
+        );
+
+        when(appointmentRepo.findByClientId(1L)).thenReturn(List.of(appointment));
+
+        mockMvc.perform(get("/appointmentsHL/byClient")
+                        .param("clientId", "1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].description").value("Coupe"))
+                .andExpect(jsonPath("$[0].price").value(30));
+    }
+
+    @Test
+    public void testGetAppointmentsByClient_NotFound() throws Exception {
+        when(appointmentRepo.findByClientId(999L)).thenReturn(List.of());
+
+        mockMvc.perform(get("/appointmentsHL/byClient")
+                        .param("clientId", "999"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("[]"));
+    }
+
+    @Test
+    public void testGetAppointmentsByUserCollaborator_Success() throws Exception {
+        User user = new User();
+        user.setId(1L);
+
+        Collaborator collaborator = new Collaborator();
+        collaborator.setId(2L);
+        collaborator.setUser(user);
+
+        Establishment estab = new Establishment();
+        estab.setId(3L);
+
+        Appointment appointment = new Appointment(
+                Timestamp.valueOf("2025-05-01 10:00:00"),
+                Timestamp.valueOf("2025-05-01 11:00:00"),
+                "Brushing",
+                25L,
+                user,
+                collaborator,
+                estab
+        );
+
+        when(collaboratorRepo.findByUserId(1L)).thenReturn(Optional.of(collaborator));
+        when(appointmentRepo.findByCollaboratorId(2L)).thenReturn(List.of(appointment));
+
+        mockMvc.perform(get("/appointmentsHL/byUserCollab")
+                        .param("userId", "1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].description").value("Brushing"))
+                .andExpect(jsonPath("$[0].price").value(25));
+    }
+
+    @Test
+    public void testGetAppointmentsByUserCollaborator_NotFound() throws Exception {
+        when(collaboratorRepo.findByUserId(999L)).thenReturn(Optional.empty());
+
+        mockMvc.perform(get("/appointmentsHL/byUserCollab")
+                        .param("userId", "999"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("Collaborator not found for userId: 999"));
+    }
+
+
 }
