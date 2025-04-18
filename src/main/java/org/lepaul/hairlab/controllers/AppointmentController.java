@@ -77,7 +77,7 @@ public class AppointmentController {
     }
 
     @GetMapping("/byUserCollab")
-    public List<Appointment> getAppointmentsByUserCollaborator(@RequestParam Long userId) {
+    public Iterable<Appointment> getAppointmentsByUserCollaborator(@RequestParam Long userId) {
         logger.info("GET /appointmentsHL/byUserCollab?userId={}", userId);
 
         Collaborator collaborator = collaboratorRepo.findByUserId(userId)
